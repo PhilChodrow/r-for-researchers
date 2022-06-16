@@ -1,0 +1,6 @@
+## Welcome! {.unnumbered .unlisted}
+
+This website is designed to give a quick introduction to the R programming language for practicing researchers who may not be specialists in data science or statistics. It was written to support researchers at the ICERM Summer Program "Data Science and Social Justice: Networks, Policy, and Education."
+
+
+

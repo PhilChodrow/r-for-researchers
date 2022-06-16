@@ -1,0 +1,64 @@
+---
+title: Getting Started
+---
+
+
+In this short set of notes, we'll install our needed software packages and ensure that they are operational. There are three primary pieces of software that we'll interact with in the coming sessions: 
+
+- The [R programming language](https://www.r-project.org), a programming language specialized for data analysis and statistics. 
+- [RStudio](https://www.rstudio.com), an integrated development environment (IDE) for the R language. RStudio is considered by many to be the most convenient way to interact with R, although there are many alternatives. RStudio is "the app" that most people envision when they think of R. 
+- [Quarto](https://quarto.org), a technical publishing framework that enables you to easily produce beautiful reports, slides, and other documents that integrate computations and text. These notes were written in Quarto. Quarto is a recent development of ideas pioneered by [RMarkdown](https://rmarkdown.rstudio.com), and is developed by many of the same folks. 
+
+
+These pieces work together as follows: 
+
+> Your data analysis consists of writing **R code** and explanatory text. You will write both in the **RStudio** application. The **Quarto framework** will translate your plan text into attractive reports with computational output. 
+
+## Install Your Tools
+
+These steps are easy, but there's a lot of downloading and installing to do. You may want to leave around 30 minutes to complete these steps. 
+
+1. Download and install the [R programming language](https://cran.r-project.org).
+2. Download and install the [RStudio IDE](https://www.rstudio.com/products/rstudio/download/). You want the Free version of RStudio Desktop that corresponds to your computer's operating system. 
+3. Download the [Quarto Command Line Interface](https://quarto.org/docs/get-started/) (CLI) that corresponds to your computer's operating system. 
+
+## Install the Tidyverse
+
+We're actually going to be using a very specific set of packages for R, which are often collectively called *the Tidyverse*. To install the Tidyverse, first open RStudio. You'll be greeted by a window that looks a bit like this: 
+
+```{r}
+#| fig-cap: "The panels of the RStudio IDE. In this image, the console is the panel at the bottom left. Image credit: [Anastasia Ushakova and Milan Valasek](https://bookdown.org/animestina/R_Manchester/)."
+#| label: fig-rstudio
+#| echo: false
+
+knitr::include_graphics("https://bookdown.org/animestina/R_Manchester/rstudio2.png")
+```
+
+Locate the *console.* When you first open RStudio, the console will typically contain some information about your R installation. If you click the console area, you should see a blinking cursor beside a `>`. In @fig-rstudio, this is in the very bottom left of the image. This is the first and simplest way to interact with R. 
+
+Type the following command in the console, exactly as written. 
+
+```{r}
+#| eval: false
+install.packages("tidyverse")
+```
+
+Then, hit `Enter`. You'll see a series of messages flash across the console. 
+
+The installation might take a while. Once you see messages stop flashing, check the console output to see if there are any obvious error messages (usually highlighted in red). 
+
+To test your installation, paste the following code into your console, and hit enter. You'll likely see some output as the tidyverse library is loaded (made ready to use). The last thing you see, however, should be the output below. 
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+"I installed all the software I need!" %>% print()
+```
+
+If so, you are good to go! 
+
+```{r}
+#| fig-cap: Yes, you **specifically**.
+#| echo: false
+knitr::include_graphics("http://www.quickmeme.com/img/b1/b1863ec001f174e2d9a3cc0ad89aad0cbf78ddd297256b891bd8ff4662f3f044.jpg")
+```

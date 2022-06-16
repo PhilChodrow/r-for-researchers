@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "A Quick Intro to R For Researchers",
+    "section": "",
+    "text": "This website is designed to give a quick introduction to the R programming language for practicing researchers who may not be specialists in data science or statistics. It was written to support researchers at the ICERM Summer Program “Data Science and Social Justice: Networks, Policy, and Education.”"
+  },
+  {
+    "objectID": "1_installation.html",
+    "href": "1_installation.html",
+    "title": "1  Getting Started",
+    "section": "",
+    "text": "In this short set of notes, we’ll install our needed software packages and ensure that they are operational. There are three primary pieces of software that we’ll interact with in the coming sessions:\nThese pieces work together as follows:"
+  },
+  {
+    "objectID": "1_installation.html#install-the-tidyverse",
+    "href": "1_installation.html#install-the-tidyverse",
+    "title": "1  Getting Started",
+    "section": "1.2 Install the Tidyverse",
+    "text": "1.2 Install the Tidyverse\nWe’re actually going to be using a very specific set of packages for R, which are often collectively called the Tidyverse. To install the Tidyverse, first open RStudio. You’ll be greeted by a window that looks a bit like this:\n\n\n\n\n\nFigure 1.1: The panels of the RStudio IDE. In this image, the console is the panel at the bottom left. Image credit: Anastasia Ushakova and Milan Valasek.\n\n\n\n\nLocate the console. When you first open RStudio, the console will typically contain some information about your R installation. If you click the console area, you should see a blinking cursor beside a >. In Figure 1.1, this is in the very bottom left of the image. This is the first and simplest way to interact with R.\nType the following command in the console, exactly as written.\n\ninstall.packages(\"tidyverse\")\n\nThen, hit Enter. You’ll see a series of messages flash across the console.\nThe installation might take a while. Once you see messages stop flashing, check the console output to see if there are any obvious error messages (usually highlighted in red).\nTo test your installation, paste the following code into your console, and hit enter. You’ll likely see some output as the tidyverse library is loaded (made ready to use). The last thing you see, however, should be the output below.\n\nlibrary(tidyverse)\n\"I installed all the software I need!\" %>% print()\n\n[1] \"I installed all the software I need!\"\n\n\nIf so, you are good to go!\n\n\n\n\n\nYes, you specifically."
+  },
+  {
+    "objectID": "1_installation.html#install-your-tools",
+    "href": "1_installation.html#install-your-tools",
+    "title": "1  Getting Started",
+    "section": "1.1 Install Your Tools",
+    "text": "1.1 Install Your Tools\nThese steps are easy, but there’s a lot of downloading and installing to do. You may want to leave around 30 minutes to complete these steps.\n\nDownload and install the R programming language.\nDownload and install the RStudio IDE. You want the Free version of RStudio Desktop that corresponds to your computer’s operating system.\nDownload the Quarto Command Line Interface (CLI) that corresponds to your computer’s operating system."
+  }
+]

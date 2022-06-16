@@ -1,0 +1,29 @@
+project:
+  type: book
+  output-dir: docs
+
+toc: true
+number-sections: true
+
+
+book:
+  title: "A Quick Intro to R For Researchers"
+  date: "6/16/2022"
+  chapters:
+    - index.qmd
+    - 1_installation.qmd
+
+
+
+format:
+  html:
+    theme: cosmo
+    number-depth: 2
+    suppress-bibliography: true
+    # csl: chicago-fullnote-bibliography.csl
+    callout-appearance: simple
+    callout-icon: false
+    reference-location: margin
+    citation-location: margin
+    cap-location: margin
+    highlight-style: tango
