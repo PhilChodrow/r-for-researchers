@@ -1,0 +1,102 @@
+# Navigating Analysis Documents
+
+In the previous section, you ran a few small snippets of code in the R console. This is a convenient way to try very simple things, but there's a problem -- the console isn't very good for *remembering* or *revising* code. So, the classic analytical workflow for R is: 
+
+1. Write your code in a separate file, often called a *script*.
+2. Use tools or keyboard shortcuts to send selected code from your script to the console, where it is then evaluated. 
+
+We're going to riff on this workflow a bit. Rather than a simple script, which only contains code and comments, we'll write our code in a Quarto document. This gives us some handy tools for sending code to the console in RStudio, and also makes it easy to package up the results of our analysis in a way that we can conveniently share with others. 
+
+## Create a Quarto Document
+
+In RStudio, navigate to File -> New File -> Quarto Document. Give your document a name and list yourself as an author. 
+
+```{r}
+#| fig-cap: Setting up a first Quarto document. Please deselect the visual markdown editor (bottom checkbox). 
+#| echo: false
+knitr::include_graphics("assets/img/create-doc.png")
+```
+
+## YAML Metadata
+
+After creating your document, you'll see some text. The top five lines will look something like this:  
+
+```` markdown
+---
+title: "My Document"
+author: "Me!"
+format: html
+---
+````
+
+This is *YAML metadata*. You can think of it as the "options" for your document. For now, we won't touch it. 
+
+Delete all text in your new document *except the YAML metadata*. That is, you should delete everything from line 6 down. 
+
+
+## Code Chunks
+
+In Quarto, code is organized into *chunks*. An R code chunk opens with three backticks followed by `{r}`: ` ```{r}` , on their own line. It closes with three more backticks, again on their own line: 
+
+```` markdown
+```{{r}}
+# code goes here
+```
+````
+
+::: {.callout-note}
+**Exercise**: In RStudio, type the shortcut `Ctrl+Alt+I` (Windows) or `Cmd+Option+I` (Mac) to automatically create a code chunk. 
+:::
+
+::: {.callout-note}
+**Exercise**: Write the following code in the chunk you just created: 
+
+````{r}
+#| eval: false
+print("Social justice!")
+````
+
+Then, do one of two things: 
+
+1. If you like keyboard shortcuts, type `Ctrl+Shift+Enter` (Windows) or `Cmd+Shift+Return` (Mac) while your cursor is inside the code chunk. You'll see your message printed in the console. 
+2. If you don't like keyboard shortcuts, you can instead click the little green play button <span style="color: green"> ▶ </span> at the top right of the code chunk. 
+:::
+
+
+## Markdown
+
+[Markdown](https://www.markdownguide.org/getting-started/) is a markup language that allows you to create rich text features while writing in plain text. It was created by [John Gruber](https://daringfireball.net/projects/markdown/). You use Markdown to communicate your findings. 
+
+::: {.callout-note}
+
+**Exercise**: Paste the following text into your Quarto document, *outside your R code chunk*.
+
+````markdown
+# Heading 1
+
+## Heading 2
+
+### Heading 3
+
+- Unnumbered lists
+    - Nested items
+- A **bold** item. 
+- Even more items
+
+1. Numbered lists
+2. Another item
+    1. A nested numbered item.
+3. An *italic* item. 
+````
+:::
+
+## Preview Your Document
+
+Click the Render button, which is marked by a blue arrow <span style="color: blue"> ➜ </span>. After a few moments, you'll see a *rendered* version of your document appear. This rendering includes both nicely formatted text (from your markdown) and computational output from your code (in this case, just some printed text). 
+
+```{r}
+#| fig-cap: Hell yeah. 
+#| echo: false
+knitr::include_graphics("assets/img/document-renders.jpeg")
+```
+

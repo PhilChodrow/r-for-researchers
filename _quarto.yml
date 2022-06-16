@@ -7,11 +7,12 @@ number-sections: true
 
 
 book:
-  title: "A Quick Intro to R For Researchers"
+  title: "A Quick Introduction to R For Researchers"
   date: "6/16/2022"
   chapters:
     - index.qmd
     - 1_installation.qmd
+    - 2_running_code.qmd
 
 
 
