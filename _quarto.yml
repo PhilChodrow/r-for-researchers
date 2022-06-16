@@ -12,7 +12,7 @@ book:
   chapters:
     - index.qmd
     - 1_installation.qmd
-    - 2_running_code.qmd
+    - 2_navigating.qmd
 
 
 

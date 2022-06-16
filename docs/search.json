@@ -28,43 +28,43 @@
     "text": "1.2 Install the Tidyverse\nWe’re actually going to be using a very specific set of packages for R, which are often collectively called the Tidyverse. To install the Tidyverse, first open RStudio. You’ll be greeted by a window that looks a bit like this:\n\n\n\n\n\nFigure 1.1: The panels of the RStudio IDE. In this image, the console is the panel at the bottom left. Image credit: Anastasia Ushakova and Milan Valasek.\n\n\n\n\nLocate the console. When you first open RStudio, the console will typically contain some information about your R installation. If you click the console area, you should see a blinking cursor beside a >. In Figure 1.1, this is in the very bottom left of the image. This is the first and simplest way to interact with R.\nType the following command in the console, exactly as written.\n\ninstall.packages(\"tidyverse\")\n\nThen, hit Enter. You’ll see a series of messages flash across the console.\nThe installation might take a while. Once you see messages stop flashing, check the console output to see if there are any obvious error messages (usually highlighted in red).\nTo test your installation, paste the following code into your console, and hit enter. You’ll likely see some output as the tidyverse library is loaded (made ready to use). The last thing you see, however, should be the output below.\n\nlibrary(tidyverse)\n\"I installed all the software I need!\" %>% print()\n\n[1] \"I installed all the software I need!\"\n\n\nIf so, you are good to go!\n\n\n\n\n\nYes, you specifically."
   },
   {
-    "objectID": "2_running_code.html",
-    "href": "2_running_code.html",
+    "objectID": "2_navigating.html",
+    "href": "2_navigating.html",
     "title": "2  Navigating Analysis Documents",
     "section": "",
     "text": "In the previous section, you ran a few small snippets of code in the R console. This is a convenient way to try very simple things, but there’s a problem – the console isn’t very good for remembering or revising code. So, the classic analytical workflow for R is:\nWe’re going to riff on this workflow a bit. Rather than a simple script, which only contains code and comments, we’ll write our code in a Quarto document. This gives us some handy tools for sending code to the console in RStudio, and also makes it easy to package up the results of our analysis in a way that we can conveniently share with others."
   },
   {
-    "objectID": "2_running_code.html#create-a-quarto-document",
-    "href": "2_running_code.html#create-a-quarto-document",
+    "objectID": "2_navigating.html#create-a-quarto-document",
+    "href": "2_navigating.html#create-a-quarto-document",
     "title": "2  Navigating Analysis Documents",
     "section": "2.1 Create a Quarto Document",
     "text": "2.1 Create a Quarto Document\nIn RStudio, navigate to File -> New File -> Quarto Document. Give your document a name and list yourself as an author.\n\n\n\n\n\nSetting up a first Quarto document. Please deselect the visual markdown editor (bottom checkbox)."
   },
   {
-    "objectID": "2_running_code.html#yaml-metadata",
-    "href": "2_running_code.html#yaml-metadata",
+    "objectID": "2_navigating.html#yaml-metadata",
+    "href": "2_navigating.html#yaml-metadata",
     "title": "2  Navigating Analysis Documents",
     "section": "2.2 YAML Metadata",
     "text": "2.2 YAML Metadata\nAfter creating your document, you’ll see some text. The top five lines will look something like this:\n---\ntitle: \"My Document\"\nauthor: \"Me!\"\nformat: html\n---\nThis is YAML metadata. You can think of it as the “options” for your document. For now, we won’t touch it.\nDelete all text in your new document except the YAML metadata. That is, you should delete everything from line 6 down."
   },
   {
-    "objectID": "2_running_code.html#code-chunks",
-    "href": "2_running_code.html#code-chunks",
+    "objectID": "2_navigating.html#code-chunks",
+    "href": "2_navigating.html#code-chunks",
     "title": "2  Navigating Analysis Documents",
     "section": "2.3 Code Chunks",
     "text": "2.3 Code Chunks\nIn Quarto, code is organized into chunks. An R code chunk opens with three backticks followed by {r}: ```{r} , on their own line. It closes with three more backticks, again on their own line:\n```{r}\n# code goes here\n```\n\n\n\n\n\n\nExercise: In RStudio, type the shortcut Ctrl+Alt+I (Windows) or Cmd+Option+I (Mac) to automatically create a code chunk.\n\n\n\n\n\n\n\n\n\nExercise: Write the following code in the chunk you just created:\n\nprint(\"Social justice!\")\n\nThen, do one of two things:\n\nIf you like keyboard shortcuts, type Ctrl+Shift+Enter (Windows) or Cmd+Shift+Return (Mac) while your cursor is inside the code chunk. You’ll see your message printed in the console.\nIf you don’t like keyboard shortcuts, you can instead click the little green play button  ▶  at the top right of the code chunk."
   },
   {
-    "objectID": "2_running_code.html#markdown",
-    "href": "2_running_code.html#markdown",
+    "objectID": "2_navigating.html#markdown",
+    "href": "2_navigating.html#markdown",
     "title": "2  Navigating Analysis Documents",
     "section": "2.4 Markdown",
     "text": "2.4 Markdown\nMarkdown is a markup language that allows you to create rich text features while writing in plain text. It was created by John Gruber. You use Markdown to communicate your findings.\n\n\n\n\n\n\nExercise: Paste the following text into your Quarto document, outside your R code chunk.\n# Heading 1\n\n## Heading 2\n\n### Heading 3\n\n- Unnumbered lists\n    - Nested items\n- A **bold** item. \n- Even more items\n\n1. Numbered lists\n2. Another item\n    1. A nested numbered item.\n3. An *italic* item."
   },
   {
-    "objectID": "2_running_code.html#preview-your-document",
-    "href": "2_running_code.html#preview-your-document",
+    "objectID": "2_navigating.html#preview-your-document",
+    "href": "2_navigating.html#preview-your-document",
     "title": "2  Navigating Analysis Documents",
     "section": "2.5 Preview Your Document",
     "text": "2.5 Preview Your Document\nClick the Render button, which is marked by a blue arrow  ➜ . After a few moments, you’ll see a rendered version of your document appear. This rendering includes both nicely formatted text (from your markdown) and computational output from your code (in this case, just some printed text).\n\n\n\n\n\nHell yeah."
