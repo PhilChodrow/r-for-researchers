@@ -1,7 +1,4 @@
----
-title: Getting Started
----
-
+# Getting Started {#sec-getting-started}
 
 In this short set of notes, we'll install our needed software packages and ensure that they are operational. There are three primary pieces of software that we'll interact with in the coming sessions: 
 

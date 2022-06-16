@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.583">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>A Quick Introduction to R For Researchers - 3&nbsp; Introduction to Data Wrangling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./2_navigating.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to Data Wrangling</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A Quick Introduction to R For Researchers</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome!</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1_installation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2_navigating.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Navigating Analysis Documents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3_wrangling.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to Data Wrangling</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#acquire-data" id="toc-acquire-data" class="nav-link active" data-scroll-target="#acquire-data"> <span class="header-section-number">3.1</span> Acquire Data</a></li>
+  <li><a href="#make-friends-with-your-data" id="toc-make-friends-with-your-data" class="nav-link" data-scroll-target="#make-friends-with-your-data"> <span class="header-section-number">3.2</span> Make Friends With Your Data</a></li>
+  <li><a href="#the-pipe" id="toc-the-pipe" class="nav-link" data-scroll-target="#the-pipe"> <span class="header-section-number">3.3</span> The Pipe</a></li>
+  <li><a href="#data-subsetting-select-and-filter" id="toc-data-subsetting-select-and-filter" class="nav-link" data-scroll-target="#data-subsetting-select-and-filter"> <span class="header-section-number">3.4</span> Data Subsetting: <code>select</code> and <code>filter</code></a></li>
+  <li><a href="#descriptive-data-analysis-summarize-and-group_by" id="toc-descriptive-data-analysis-summarize-and-group_by" class="nav-link" data-scroll-target="#descriptive-data-analysis-summarize-and-group_by"> <span class="header-section-number">3.5</span> Descriptive Data Analysis: <code>summarize()</code> and <code>group_by()</code></a>
+  <ul class="collapse">
+  <li><a href="#sorting-arrange" id="toc-sorting-arrange" class="nav-link" data-scroll-target="#sorting-arrange">Sorting: <code>arrange()</code></a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to Data Wrangling</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>R is a versatile programming language that offers solutions to a wide variety of computational tasks. However, what R is truly specialized for – what it’s arguably better at than anything else – is data analysis and statistics. It has an especially robust set of tools for <em>tabular data</em>: data arranged in rows and columns. In this set of notes, we’ll practice some techniques for acquiring, managing, and analyzing tabular data.</p>
+<section id="acquire-data" class="level2 page-columns page-full" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="acquire-data"><span class="header-section-number">3.1</span> Acquire Data</h2>
+<div class="page-columns page-full"><p>Earlier in <a href="1_installation.html"><span>Chapter&nbsp;1</span></a>, we asked you to download the tidyverse package for R. To use the tools in that package, we need to load it into our workspace. We do this using the <code>library</code> command: </p><div class="no-row-height column-margin column-container"><span class="aside">Unlike when we installed the package, this time, we don’t need to put quotation marks <code>""</code> around the name <code>tidyverse</code>.</span></div></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we are ready to acquire our data set. Many kinds of data set are stored as one or more <code>CSV</code> (comma-separated values) files. Here’s the location of our data. For convenience, we’re using a data set hosted online, but we can also</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>artwork_path <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-01-12/artwork.csv"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>read_csv()</code> function accepts a path to a file and reads it into R. We then save the result to a variable called <code>artwork</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(artwork_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="make-friends-with-your-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="make-friends-with-your-data"><span class="header-section-number">3.2</span> Make Friends With Your Data</h2>
+<p>The data set we just downloaded is a list of artwork in the collections of the <a href="https://github.com/tategallery/collection">Tate Art Museum</a> (as of 2014). You can learn more about the data set <a href="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-01-12/artwork.csv">here</a>.</p>
+<p>We now have a data set to play with! Let’s take a look. Simply typing the name of the data set and sending it to the console will result in a large printout with a lot of information.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(artwork) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 20
+     id accession_number artist        artistRole artistId title dateText medium
+  &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;         &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt; 
+1  1035 A00001           Blake, Robert artist           38 A Fi… date no… Water…
+2  1036 A00002           Blake, Robert artist           38 Two … date no… Graph…
+3  1037 A00003           Blake, Robert artist           38 The … ?c.1785  Graph…
+4  1038 A00004           Blake, Robert artist           38 Six … date no… Graph…
+5  1039 A00005           Blake, Willi… artist           39 The … 1826–7,… Line …
+6  1040 A00006           Blake, Willi… artist           39 Ciam… 1826–7,… Line …
+# … with 12 more variables: creditLine &lt;chr&gt;, year &lt;dbl&gt;,
+#   acquisitionYear &lt;dbl&gt;, dimensions &lt;chr&gt;, width &lt;dbl&gt;, height &lt;dbl&gt;,
+#   depth &lt;dbl&gt;, units &lt;chr&gt;, inscription &lt;chr&gt;, thumbnailCopyright &lt;lgl&gt;,
+#   thumbnailUrl &lt;chr&gt;, url &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>This is somewhat useful, but it’s hard to get a big-picture view of what’s happening. One way is to use the the <code>glimpse()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(artwork) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 69,201
+Columns: 20
+$ id                 &lt;dbl&gt; 1035, 1036, 1037, 1038, 1039, 1040, 1041, 1042, 104…
+$ accession_number   &lt;chr&gt; "A00001", "A00002", "A00003", "A00004", "A00005", "…
+$ artist             &lt;chr&gt; "Blake, Robert", "Blake, Robert", "Blake, Robert", …
+$ artistRole         &lt;chr&gt; "artist", "artist", "artist", "artist", "artist", "…
+$ artistId           &lt;dbl&gt; 38, 38, 38, 38, 39, 39, 39, 39, 39, 39, 39, 39, 39,…
+$ title              &lt;chr&gt; "A Figure Bowing before a Seated Old Man with his A…
+$ dateText           &lt;chr&gt; "date not known", "date not known", "?c.1785", "dat…
+$ medium             &lt;chr&gt; "Watercolour, ink, chalk and graphite on paper. Ver…
+$ creditLine         &lt;chr&gt; "Presented by Mrs John Richmond 1922", "Presented b…
+$ year               &lt;dbl&gt; NA, NA, 1785, NA, 1826, 1826, 1826, 1826, 1826, 182…
+$ acquisitionYear    &lt;dbl&gt; 1922, 1922, 1922, 1922, 1919, 1919, 1919, 1919, 191…
+$ dimensions         &lt;chr&gt; "support: 394 x 419 mm", "support: 311 x 213 mm", "…
+$ width              &lt;dbl&gt; 394, 311, 343, 318, 243, 240, 242, 246, 241, 243, 2…
+$ height             &lt;dbl&gt; 419, 213, 467, 394, 335, 338, 334, 340, 335, 340, 3…
+$ depth              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ units              &lt;chr&gt; "mm", "mm", "mm", "mm", "mm", "mm", "mm", "mm", "mm…
+$ inscription        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ thumbnailCopyright &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ thumbnailUrl       &lt;chr&gt; "http://www.tate.org.uk/art/images/work/A/A00/A0000…
+$ url                &lt;chr&gt; "http://www.tate.org.uk/art/artworks/blake-a-figure…</code></pre>
+</div>
+</div>
+<p>This output tells us:</p>
+<ul>
+<li>Our data set has <code>nrow(artwork)</code> <em>rows</em>. In well-formatted tabular data, each row corresponds to an <em>observation</em> or <em>individual</em>. In our data set, each row corresponds to an individual piece of artwork.</li>
+<li>Our data set has <code>ncol(artwork)</code> <em>columns</em>. In well-formatted tabular data, each column corresponds to a feature or attribute of each observation. In our data set, columns include the artist, the medium, the date of creation, the date of acquisition, and many other attributes.</li>
+<li>Our columns have different <em>data types</em>. Some of them are numbers (<code>dbl</code>), some of them are text strings (<code>chr</code>), and one of them is a true/false logical vector (<code>lgl</code>). We can</li>
+</ul>
+</section>
+<section id="the-pipe" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="the-pipe"><span class="header-section-number">3.3</span> The Pipe</h2>
+<p>If you have prior programming experience, you may be used to operating on variables with functions using a syntax like <code>f(x)</code>, where <code>f</code> is a function and <code>x</code> is your variable. In the tidyverse framework for R, we often create data pipelines using an alternative syntax: the pipe operator, <code>%&gt;%</code>. In this format, we write <code>x %&gt;% f()</code> to achieve the same task. A convenient way to read this is “take variable <code>x</code> and do function <code>f()</code> to it.”</p>
+<p>So, our <code>glimpse</code> above could have been written</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>with the same effect. Try it and see!</p>
+<p>One of the benefits of the pipe is that it allows us to easily compose operations on our data. So, we can write <code>x %&gt;% f() %&gt;% g()</code> instead of <code>g(f(x))</code>. A convenient way to write this is “take variable <code>x</code>, then do function <code>f</code> to it, then do function <code>g</code> to the result.”</p>
+<p>Here’s a simple example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(<span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="co"># get only the first five rows</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is much more organized and easy to read than the equivalent <code>glimpse(head(artwork, 5))</code>, and this difference will only become more pronounced as we build progressively more complex data pipelines.</p>
+</section>
+<section id="data-subsetting-select-and-filter" class="level2 page-columns page-full" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="data-subsetting-select-and-filter"><span class="header-section-number">3.4</span> Data Subsetting: <code>select</code> and <code>filter</code></h2>
+<p>Let’s now begin to operate on the data. The first thing we’re going to practice is grabbing <em>subsets</em> of the data. We’re going to consider two forms of subsetting: <code>select</code>ing a subset of columns and <code>filter</code>ing a subset of rows.</p>
+<p>Use <code>select</code> to choose a subset of columns from your data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(title)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 69,201 × 1
+   title                                                                        
+   &lt;chr&gt;                                                                        
+ 1 A Figure Bowing before a Seated Old Man with his Arm Outstretched in Benedic…
+ 2 Two Drawings of Frightened Figures, Probably for ‘The Approach of Doom’      
+ 3 The Preaching of Warning. Verso: An Old Man Enthroned Between Two Groups of …
+ 4 Six Drawings of Figures with Outstretched Arms                               
+ 5 The Circle of the Lustful: Francesca da Rimini (‘The Whirlwind of Lovers’)   
+ 6 Ciampolo the Barrator Tormented by the Devils                                
+ 7 The Baffled Devils Fighting                                                  
+ 8 The Six-Footed Serpent Attacking Agnolo Brunelleschi                         
+ 9 The Serpent Attacking Buoso Donati                                           
+10 The Pit of Disease: The Falsifiers                                           
+# … with 69,191 more rows</code></pre>
+</div>
+</div>
+<p>You can select multiple columns at a time:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(title, artist, year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 69,201 × 3
+   title                                                            artist  year
+   &lt;chr&gt;                                                            &lt;chr&gt;  &lt;dbl&gt;
+ 1 A Figure Bowing before a Seated Old Man with his Arm Outstretch… Blake…    NA
+ 2 Two Drawings of Frightened Figures, Probably for ‘The Approach … Blake…    NA
+ 3 The Preaching of Warning. Verso: An Old Man Enthroned Between T… Blake…  1785
+ 4 Six Drawings of Figures with Outstretched Arms                   Blake…    NA
+ 5 The Circle of the Lustful: Francesca da Rimini (‘The Whirlwind … Blake…  1826
+ 6 Ciampolo the Barrator Tormented by the Devils                    Blake…  1826
+ 7 The Baffled Devils Fighting                                      Blake…  1826
+ 8 The Six-Footed Serpent Attacking Agnolo Brunelleschi             Blake…  1826
+ 9 The Serpent Attacking Buoso Donati                               Blake…  1826
+10 The Pit of Disease: The Falsifiers                               Blake…  1826
+# … with 69,191 more rows</code></pre>
+</div>
+</div>
+<p>There are fancy operators for selecting columns based on criteria, but these are usually conveniences rather than necessities.</p>
+
+<div class="no-row-height column-margin column-container"><div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"year"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div><p>A more common operation is to <code>filter</code> rows according to a logical criterion. For example, we might want to create a new data set that contains only paintings acquired in the Tate after 1950:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>after_1950 <span class="ot">&lt;-</span> artwork <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(acquisitionYear <span class="sc">&gt;</span> <span class="dv">1950</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Our new data frame contains just 26113 rows, compared to the 69201 in the full data frame.</p>
+<p>It is also possible to filter on multiple logical criteria. For example, maybe we want recently-acquired oil paintings on canvas:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(acquisitionYear <span class="sc">&gt;</span> <span class="dv">1950</span>, medium <span class="sc">==</span> <span class="st">"Oil paint on canvas"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can compose <code>filter</code> and <code>select</code> to subset by both rows and columns, using <code>%&gt;%</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(acquisitionYear <span class="sc">&gt;</span> <span class="dv">1950</span>, medium <span class="sc">==</span> <span class="st">"Oil paint on canvas"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(artist, title, acquisitionYear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout-note callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Exercise</strong>: Grab the person next to you and try to create a table of artwork acquired in the 1970s (between 1970 and 1979, inclusive). Include only the columns for artist, year, and medium.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="descriptive-data-analysis-summarize-and-group_by" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="descriptive-data-analysis-summarize-and-group_by"><span class="header-section-number">3.5</span> Descriptive Data Analysis: <code>summarize()</code> and <code>group_by()</code></h2>
+<p>Let’s now add our first set of tools for <em>summarizing</em> data. A summary is any operation that aggregates information from one or more columns of data, optionally <em>by group</em>. Some examples of summaries include:</p>
+<ul>
+<li>The number of observations in the data, or in each group.</li>
+<li>The mean, median, or standard deviation of some quantity.</li>
+<li>The percentage of observations that match some criterion.</li>
+</ul>
+<p>You compute summaries using the <code>summarize</code> function. You first give a name to your summary value, and then you specify a formula to compute it. The <code>n()</code> function just counts the number of rows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">num_records =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  num_records
+        &lt;int&gt;
+1       69201</code></pre>
+</div>
+</div>
+<p>The result is a new data frame, this time with just one row and one column.</p>
+<p>We can compute multiple summary variables simultaneously by separating name-formula pairs with a comma. For example, we can compute the earliest and latest dates on which artwork was acquired.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">earliest_date =</span> <span class="fu">min</span>(acquisitionYear),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">latest_date   =</span> <span class="fu">max</span>(acquisitionYear),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  earliest_date latest_date     n
+          &lt;dbl&gt;       &lt;dbl&gt; &lt;int&gt;
+1            NA          NA 69201</code></pre>
+</div>
+</div>
+<p>Whoops! Those aren’t very good results. The reason we didn’t get the answer we wanted was that there are some missing values – encoded <code>NA</code> – in the <code>acquisitionYear</code> column. We can exclude those by passing the argument <code>na.rm = TRUE</code> to both <code>min</code> and <code>max</code>.[This also works for many other summarizing functions, like <code>sum</code> and <code>mean</code>.]</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">earliest_date =</span> <span class="fu">min</span>(acquisitionYear, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">latest_date   =</span> <span class="fu">max</span>(acquisitionYear, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  earliest_date latest_date     n
+          &lt;dbl&gt;       &lt;dbl&gt; &lt;int&gt;
+1          1823        2013 69201</code></pre>
+</div>
+</div>
+<p>This is ok, but summarize gets really powerful when we combine it with <code>group_by()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(artist) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">earliest_date =</span> <span class="fu">min</span>(acquisitionYear, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">latest_date   =</span> <span class="fu">max</span>(acquisitionYear, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,336 × 4
+   artist                 earliest_date latest_date     n
+   &lt;chr&gt;                          &lt;dbl&gt;       &lt;dbl&gt; &lt;int&gt;
+ 1 ?British School                 1927        1927     1
+ 2 Abakanowicz, Magdalena          2009        2009     4
+ 3 Abbey, Edwin Austin             1924        1924     6
+ 4 Abbott, Berenice                2010        2010     3
+ 5 Abbott, Lemuel Francis          1885        1968     2
+ 6 Abrahams, Ivor                  1975        1986   108
+ 7 Absalon                         1997        1997     6
+ 8 Abts, Tomma                     2006        2012     6
+ 9 Acconci, Vito                   1982        2010     6
+10 Ackling, Roger                  1983        1983     1
+# … with 3,326 more rows</code></pre>
+</div>
+</div>
+<p>We now have a long table that tells us the earliest and latest acquisition dates for each artist represented in the collection.</p>
+<section id="sorting-arrange" class="level3">
+<h3 class="anchored" data-anchor-id="sorting-arrange">Sorting: <code>arrange()</code></h3>
+<p>In the case above, we had too many rows to conveniently visualize. In cases like these, it is often beneficial to bring certain rows to the top. We can do this by <em>sorting</em>, using the <code>arrange()</code> function. To sort by a column, just add that column as an argument to <code>arrange</code>. To sort in descending order, wrap the column name in <code>desc()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>artwork <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(artist) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">earliest_date =</span> <span class="fu">min</span>(acquisitionYear, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">latest_date   =</span> <span class="fu">max</span>(acquisitionYear, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,336 × 4
+   artist                         earliest_date latest_date     n
+   &lt;chr&gt;                                  &lt;dbl&gt;       &lt;dbl&gt; &lt;int&gt;
+ 1 Turner, Joseph Mallord William          1847        2007 39389
+ 2 Jones, George                           1847        1997  1046
+ 3 Moore, Henry, OM, CH                    1939        1994   623
+ 4 Daniell, William                        1979        1979   612
+ 5 Beuys, Joseph                           1972        2009   578
+ 6 British (?) School                      1997        1997   388
+ 7 Paolozzi, Sir Eduardo                   1958        2012   385
+ 8 Flaxman, John                           1922        1997   287
+ 9 Phillips, Esq Tom                       1971        2001   274
+10 Warhol, Andy                            1971        2013   272
+# … with 3,326 more rows</code></pre>
+</div>
+</div>
+<p>Arranging and viewing your data is a great way to find anomalies. For example, here it appears that Joseph Mallord William Turner was the artist in 39,389 pieces in the Tate collections. I’m not familiar enough with the collections to know whether this is a typo or, if not, what it means that Turner is attached to so many pieces.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./2_navigating.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Navigating Analysis Documents</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

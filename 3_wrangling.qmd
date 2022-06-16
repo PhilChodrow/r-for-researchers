@@ -1,0 +1,198 @@
+---
+message: false
+warning: false
+---
+
+# Introduction to Data Wrangling 
+
+R is a versatile programming language that offers solutions to a wide variety of computational tasks. However, what R is truly specialized for -- what it's arguably better at than anything else -- is data analysis and statistics. It has an especially robust set of tools for *tabular data*: data arranged in rows and columns. In this set of notes, we'll practice some techniques for acquiring, managing, and analyzing tabular data. 
+
+## Acquire Data
+
+Earlier in @sec-getting-started, we asked you to download the tidyverse package for R. To use the tools in that package, we need to load it into our workspace. We do this using the `library` command: [Unlike when we installed the package, this time, we don't need to put quotation marks `""` around the name `tidyverse`.]{.aside} 
+
+```{r}
+library(tidyverse)
+```
+
+Now we are ready to acquire our data set. Many kinds of data set are stored as one or more `CSV` (comma-separated values) files. Here's the location of our data. For convenience, we're using a data set hosted online, but we can also  
+
+```{r}
+artwork_path <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-01-12/artwork.csv"
+```
+
+The `read_csv()` function accepts a path to a file and reads it into R. We then save the result to a variable called `artwork`. 
+
+```{r}
+artwork <- read_csv(artwork_path)
+```
+
+
+## Make Friends With Your Data
+
+The data set we just downloaded is a list of artwork in the collections of the [Tate Art Museum](https://github.com/tategallery/collection) (as of 2014). You can learn more about the data set [here](https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-01-12/artwork.csv).
+
+We now have a data set to play with! Let's take a look. Simply typing the name of the data set and sending it to the console will result in a large printout with a lot of information. 
+
+```{r}
+head(artwork) 
+```
+
+This is somewhat useful, but it's hard to get a big-picture view of what's happening. One way is to use the the `glimpse()` function: 
+
+```{r}
+glimpse(artwork) 
+```
+
+This output tells us: 
+
+- Our data set has `nrow(artwork)` *rows*. In well-formatted tabular data, each row corresponds to an *observation* or *individual*. In our data set, each row corresponds to an individual piece of artwork. 
+- Our data set has `ncol(artwork)` *columns*. In well-formatted tabular data, each column corresponds to a feature or attribute of each observation. In our data set, columns include the artist, the medium, the date of creation, the date of acquisition, and many other attributes. 
+- Our columns have different *data types*. Some of them are numbers (`dbl`), some of them are text strings (`chr`), and one of them is a true/false logical vector (`lgl`). We can  
+
+## The Pipe
+
+If you have prior programming experience, you may be used to operating on variables with functions using a syntax like `f(x)`, where `f` is a function and `x` is your variable. In the tidyverse framework for R, we often create data pipelines using an alternative syntax: the pipe operator, `%>%`. In this format, we write `x %>% f()` to achieve the same task. A convenient way to read this is "take variable `x` and do function `f()` to it."
+
+So, our `glimpse` above could have been written 
+
+```{r}
+#| eval: false
+artwork %>% glimpse()
+```
+
+with the same effect. Try it and see! 
+
+One of the benefits of the pipe is that it allows us to easily compose operations on our data. So, we can write `x %>% f() %>% g()` instead of `g(f(x))`. A convenient way to write this is "take variable `x`, then do function `f` to it, then do function `g` to the result."
+
+Here's a simple example: 
+
+```{r}
+#| eval: false
+artwork %>% 
+    head(5) %>% # get only the first five rows
+    glimpse()
+```
+
+This is much more organized and easy to read than the equivalent `glimpse(head(artwork, 5))`, and this difference will only become more pronounced as we build progressively more complex data pipelines. 
+
+## Data Subsetting: `select` and `filter`
+
+Let's now begin to operate on the data. The first thing we're going to practice is grabbing *subsets* of the data. We're going to consider two forms of subsetting: `select`ing a subset of columns and `filter`ing a subset of rows. 
+
+Use `select` to choose a subset of columns from your data. 
+
+```{r}
+artwork %>%
+    select(title)
+```
+
+You can select multiple columns at a time: 
+
+```{r}
+artwork %>%
+    select(title, artist, year)
+```
+
+There are fancy operators for selecting columns based on criteria, but these are usually conveniences rather than necessities.  
+
+```{r}
+#| column: margin
+#| eval: false
+artwork %>%
+    select(contains("year")) 
+```
+
+A more common operation is to `filter` rows according to a logical criterion. For example, we might want to create a new data set that contains only paintings acquired in the Tate after 1950:
+
+```{r}
+after_1950 <- artwork %>% 
+    filter(acquisitionYear > 1950)
+```
+
+Our new data frame contains just `r nrow(after_1950)` rows, compared to the `r nrow(artwork)` in the full data frame. 
+
+It is also possible to filter on multiple logical criteria. For example, maybe we want recently-acquired oil paintings on canvas: 
+
+```{r}
+#| eval: false
+artwork %>% 
+    filter(acquisitionYear > 1950, medium == "Oil paint on canvas")
+```
+
+We can compose `filter` and `select` to subset by both rows and columns, using `%>%`: 
+
+```{r}
+#| eval: false
+artwork %>% 
+    filter(acquisitionYear > 1950, medium == "Oil paint on canvas") %>% 
+    select(artist, title, acquisitionYear)
+```
+
+
+::: {.callout-note}
+**Exercise**: Grab the person next to you and try to create a table of artwork acquired in the 1970s (between 1970 and 1979, inclusive). Include only the columns for artist, year, and medium. 
+:::
+
+## Descriptive Data Analysis: `summarize()` and `group_by()`
+
+Let's now add our first set of tools for *summarizing* data. A summary is any operation that aggregates information from one or more columns of data, optionally *by group*. Some examples of summaries include: 
+
+- The number of observations in the data, or in each group. 
+- The mean, median, or standard deviation of some quantity. 
+- The percentage of observations that match some criterion. 
+
+You compute summaries using the `summarize` function. You first give a name to your summary value, and then you specify a formula to compute it. The `n()` function just counts the number of rows: 
+
+```{r}
+artwork %>%
+    summarize(num_records = n())
+```
+
+The result is a new data frame, this time with just one row and one column. 
+
+
+We can compute multiple summary variables simultaneously by separating name-formula pairs with a comma. For example, we can compute the earliest and latest dates on which artwork was acquired. 
+```{r}
+artwork %>%
+    summarize(earliest_date = min(acquisitionYear),
+              latest_date   = max(acquisitionYear),
+              n = n())
+```
+
+Whoops! Those aren't very good results. The reason we didn't get the answer we wanted was that there are some missing values -- encoded `NA` -- in the `acquisitionYear` column. We can exclude those by passing the argument `na.rm = TRUE` to both `min` and `max`.[This also works for many other summarizing functions, like `sum` and `mean`.] 
+
+```{r}
+artwork %>%
+    summarize(earliest_date = min(acquisitionYear, na.rm = TRUE),
+              latest_date   = max(acquisitionYear, na.rm = TRUE),
+              n = n())
+```
+
+This is ok, but summarize gets really powerful when we combine it with `group_by()`. 
+
+```{r}
+artwork %>% 
+    group_by(artist) %>% 
+    summarize(earliest_date = min(acquisitionYear, na.rm = TRUE),
+              latest_date   = max(acquisitionYear, na.rm = TRUE),
+              n = n())
+```
+
+We now have a long table that tells us the earliest and latest acquisition dates for each artist represented in the collection. 
+
+### Sorting: `arrange()`
+
+In the case above, we had too many rows to conveniently visualize. In cases like these, it is often beneficial to bring certain rows to the top. We can do this by *sorting*, using the `arrange()` function. To sort by a column, just add that column as an argument to `arrange`. To sort in descending order, wrap the column name in `desc()`: 
+
+```{r}
+artwork %>% 
+    group_by(artist) %>% 
+    summarize(earliest_date = min(acquisitionYear, na.rm = TRUE),
+              latest_date   = max(acquisitionYear, na.rm = TRUE),
+              n = n()) %>% 
+    arrange(desc(n))
+```
+
+Arranging and viewing your data is a great way to find anomalies. For example, here it appears that Joseph Mallord William Turner was the artist in 39,389 pieces in the Tate collections. I'm not familiar enough with the collections to know whether this is a typo or, if not, what it means that Turner is attached to so many pieces. 
+
