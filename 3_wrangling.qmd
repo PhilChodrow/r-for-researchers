@@ -131,7 +131,18 @@ artwork %>%
 
 
 ::: {.callout-note}
-**Exercise**: Grab the person next to you and try to create a table of artwork acquired in the 1970s (between 1970 and 1979, inclusive). Include only the columns for artist, year, and medium. 
+**Exercise**: Grab the person next to you and try to create a table of artwork acquired in the 1970s (between 1970 and 1979, inclusive). Include only the columns for artist, acquisition year, and title. 
+
+```{r}
+#| code-fold: true
+#| eval: false
+
+artwork %>% 
+    filter(acquisitionYear >= 1970, acquisitionYear <= 1979) %>% 
+    select(artist, acquisitionYear, title)
+
+```
+
 :::
 
 ## Descriptive Data Analysis: `summarize()` and `group_by()`
@@ -195,4 +206,111 @@ artwork %>%
 ```
 
 Arranging and viewing your data is a great way to find anomalies. For example, here it appears that Joseph Mallord William Turner was the artist in 39,389 pieces in the Tate collections. I'm not familiar enough with the collections to know whether this is a typo or, if not, what it means that Turner is attached to so many pieces. 
+
+### Multiple Data Tables
+
+Ok, all well and good, but most interesting data sets are actually distributed across multiple files. In our case, we also have some interesting information about the *artists* of these pieces of artwork, but this information is actually in a separate CSV file. Let's grab that file now. 
+
+```{r}
+artists_path <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-01-12/artists.csv"
+artists <- read_csv(artists_path)
+```
+
+Let's take a look at our new data set: 
+
+```{r}
+artists %>% glimpse()
+```
+
+For each artist, we have several useful pieces of demographic information, including the years and places of their birth and death. In order to relate this data to the `artwork` data set, we need to figure out how to associate a row of `artists` to one or more row of `artwork`. To do this requires one or more *key* columns, which are supposed to match between the two tables. 
+
+In our case, we can match id numbers, which were added by the Tate. The id of the artist is called `artistId` in the `artwork` table and `id` in the `artists` table. We can create a new version of the artwork table that includes demographic information for each artist by `left_join`ing the two tables together. 
+
+```{r}
+artwork_joined <- artwork %>% 
+    left_join(artists, by = c("artistId" = "id"))
+```
+
+We can now check that `artwork_joined` has more columns than the original `artwork`: 
+
+```{r}
+artwork_joined %>% glimpse()
+```
+
+With these new columns, we can ask new questions. For example, we can count the number of works by female artists in the collections: 
+
+```{r}
+#| tbl-cap: Uh, yikes. 
+artwork_joined %>%
+    group_by(gender) %>% 
+    summarize(n = n())
+```
+
+Uh, yikes. 
+
+::: {.callout-note}
+**Exercise**: Compute a table that shows the most common artist places of birth (column is called `placeOfBirth`) for each piece of artwork. 
+
+```{r}
+#| eval: false
+#| code-fold: true
+artwork_joined %>% 
+    group_by(placeOfBirth) %>% 
+    summarize(n = n()) %>% 
+    arrange(desc(n))
+```
+:::
+
+### New Columns: `mutate()`
+
+It's often useful to add new columns to a data frame. For example, consider the following question: 
+
+> How long does it take before the Tate acquires a piece of artwork? Does this vary by artist gender?  
+
+To address this question, it would be useful to have a column that gives the difference between the acquisition year and the year the work was completed. This column doesn't exist in the data, but we can make it using the `mutate()` function: 
+
+
+```{r}
+artwork_joined <- artwork_joined %>%
+    mutate(years_to_acquire = acquisitionYear - year) 
+```
+
+
+::: {.callout-note}
+
+**Exercise**: Compute the mean number of years to acquire artwork by male and female artists, and interpret your findings. 
+
+```{r}
+#| code-fold: true
+#| eval: false
+artwork_joined %>% 
+    group_by(gender) %>% 
+    summarize(mean_years_to_acquire = mean(years_to_acquire, na.rm = T)) 
+```
+
+:::
+
+::: {.callout-note}
+
+**Exercise**: Compute the mean number of years to acquire artwork by male and female artists, and interpret your findings. 
+
+```{r}
+#| code-fold: true
+#| eval: false
+artwork_joined %>% 
+    group_by(gender) %>% 
+    summarize(mean_years_to_acquire = mean(years_to_acquire, na.rm = T)) 
+```
+
+:::
+
+What fraction of artists died in the same place that they were born? A nice way to compute this is to first create a logical `TRUE`-`FALSE` column that describes this, and then compute the mean of that column. `TRUE` values will be interpreted as `1`s and `FALSE` values will be interpreted as `0`s, and so the mean of this column will give the proportion. 
+```{r}
+artwork_joined %>% 
+    mutate(born_died_same = placeOfBirth == placeOfDeath) %>% 
+    group_by(gender) %>% 
+    summarize(born_died_same_proportion = mean(born_died_same, na.rm = T))
+```
+
+This result may suggest that male artists in the data were more able to travel. The reliability of this analysis would depend on the ways in which the birthplace and place of death are recorded: for example, this method would treat the strings `"London"` and `"London, UK"` as different. 
 
