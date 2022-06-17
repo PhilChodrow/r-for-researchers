@@ -303,14 +303,3 @@ artwork_joined %>%
 ```
 
 :::
-
-What fraction of artists died in the same place that they were born? A nice way to compute this is to first create a logical `TRUE`-`FALSE` column that describes this, and then compute the mean of that column. `TRUE` values will be interpreted as `1`s and `FALSE` values will be interpreted as `0`s, and so the mean of this column will give the proportion. 
-```{r}
-artwork_joined %>% 
-    mutate(born_died_same = placeOfBirth == placeOfDeath) %>% 
-    group_by(gender) %>% 
-    summarize(born_died_same_proportion = mean(born_died_same, na.rm = T))
-```
-
-This result may suggest that male artists in the data were more able to travel. The reliability of this analysis would depend on the ways in which the birthplace and place of death are recorded: for example, this method would treat the strings `"London"` and `"London, UK"` as different. 
-

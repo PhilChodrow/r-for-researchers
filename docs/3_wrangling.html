@@ -635,22 +635,6 @@ $ url.y              &lt;chr&gt; "http://www.tate.org.uk/art/artists/robert-blak
 </div>
 </div>
 </div>
-<p>What fraction of artists died in the same place that they were born? A nice way to compute this is to first create a logical <code>TRUE</code>-<code>FALSE</code> column that describes this, and then compute the mean of that column. <code>TRUE</code> values will be interpreted as <code>1</code>s and <code>FALSE</code> values will be interpreted as <code>0</code>s, and so the mean of this column will give the proportion.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>artwork_joined <span class="sc">%&gt;%</span> </span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">born_died_same =</span> placeOfBirth <span class="sc">==</span> placeOfDeath) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">born_died_same_proportion =</span> <span class="fu">mean</span>(born_died_same, <span class="at">na.rm =</span> T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 2
-  gender born_died_same_proportion
-  &lt;chr&gt;                      &lt;dbl&gt;
-1 Female                    0.140 
-2 Male                      0.0428
-3 &lt;NA&gt;                      0     </code></pre>
-</div>
-</div>
-<p>This result may suggest that male artists in the data were more able to travel. The reliability of this analysis would depend on the ways in which the birthplace and place of death are recorded: for example, this method would treat the strings <code>"London"</code> and <code>"London, UK"</code> as different.</p>
 
 
 </section>
